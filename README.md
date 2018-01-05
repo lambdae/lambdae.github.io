@@ -1,3 +1,1 @@
-# lambdae.github.io
-
-## lambdae pages
+# Lambdae Home
