@@ -2,7 +2,7 @@
 layout: post
 title: Documentation
 description: Documentation will have all the features of the theme mentioned in sections. You can delete this after installation but it is good to keep it as unpublished so that only you can read it.
-categories: general
+categories: design
 author: ashwathama
 ---
 
