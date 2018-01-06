@@ -6,7 +6,7 @@
     z-index: 9999; /* Stay on top */
     top: 0;
     left: 0;
-    background-color: #fff; /* Black*/
+    background-color: rgb(62, 100, 134); /* Black*/
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 10%; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
@@ -28,7 +28,7 @@
     padding: 8px 8px 8px 22px;
     text-decoration: none;
     font-size: 20px;
-    color: #818181;
+    color: #fdfdfd;
     display: block;
     transition: 0.1s
 }
