@@ -11,8 +11,10 @@ author: lambdae
 
     Jemalloc在malloc(size_t sz)时会通过一个静态的完美哈希在O(1)的时间复杂度查找到大小 >= sz的slab槽位(jemalloc定义为bin)，该hash表使用宏在编译时生成。通过该哈希表，jemalloc的小内存分配流程可以简述为：
 
-        malloc(size_t sz) -> hash(sz) -> bin的槽位index -> 
-        根据index获得bin在chunk的元数据指针 -> 获取指针指向对象的bitmap(freelist) -> 返回void*指针给用户
+    ```C
+    malloc(size_t sz) -> hash(sz) -> bin的槽位index -> 
+    根据index获得bin在chunk的元数据指针 -> 获取指针指向对象的bitmap(freelist) -> 返回void*指针给用户
+	```
 
     注：jemalloc大内存块对象根据地址空间由黑红树管理，不在小内存slab的线性布局内。jemalloc可用的小内存对象使用bitmap记录，和linux slab、TCmalloc的freelist链表不同。freelist构造起来会更简单，jemalloc为什么用bitmap有时间再探究，挖个坑。
 
