@@ -16,7 +16,7 @@ author: lambdae
 * **code**
     
 
-     ```C
+     ```c
     int last, end, cnt;
     bool valid;
 

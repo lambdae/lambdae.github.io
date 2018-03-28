@@ -1,7 +1,7 @@
 ---
 layout: post
-title: 从Go语言的timer到futex
-description:  从golang runtime的timer看futex的应用
+title: 浅析Go语言和beanstalk的timer的设计
+description: 简要分析timer的实现方式
 categories: os tech
 author: lambdae
 ---
@@ -193,5 +193,5 @@ author: lambdae
     }
     ```
 
-    最后终端输出了20个sleeping，至此golang的timer实现细节就过了一遍，剩下的就是内核怎么管理futex机制了，看来后端工程师终究是绕不过kernel这个圈。
+    最后终端输出了20个sleeping，至此golang的timer实现细节就过了一遍，golang使用了一个专用的内核线程(即GPM调度模型的M）去做futex睡眠操作，让内核去调度，当timeout时加入到runnable队列里，让Go调度器去执行timeout的操作。
 
