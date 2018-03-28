@@ -15,40 +15,11 @@ author: lambdae
     以下依次分析timer的调用栈：
 
      ```go
-    func addtimerLocked(t *timer) {
-    	if t.when < 0 {
-    		t.when = 1<<63 - 1
-    	}
-    	t.i = len(timers.t)
-    	timers.t = append(timers.t, t)
-     // 堆化
-    	siftupTimer(t.i)
-    	if t.i == 0 {
-    		// siftup moved to top: new earliest deadline.
-    		if timers.sleeping {
-    			timers.sleeping = false
-    			notewakeup(&timers.waitnote)
-    		}
-    		if timers.rescheduling {
-    			timers.rescheduling = false
-    			goready(timers.gp, 0)
-    		}
-    	}
-     // 初始化timer gorutine 只运行一次
-    	if !timers.created {
-    		timers.created = true
-    		go timerproc()
-    	}
-    }
-     ```
-
-    ```go
-    // timer gorutine 周期性的管理二叉堆
     func (tb *timersBucket) addtimerLocked(t *timer) {
-	    // when must never be negative; otherwise timerproc will overflow
+	   // when must never be negative; otherwise timerproc will overflow
 	    // during its delta calculation and never expire other runtime timers.
 	    if t.when < 0 {
-	        t.when = 1<<63 - 1
+		     t.when = 1<<63 - 1
 	    }
 	    t.i = len(tb.t)
 	    tb.t = append(tb.t, t)
@@ -58,21 +29,85 @@ author: lambdae
 	    if t.i == 0 {
 		    // siftup moved to top: new earliest deadline.
 		    if tb.sleeping {
-			    tb.sleeping = false
-			    // 唤醒定时器futex睡眠
-			    notewakeup(&tb.waitnote)
+			     tb.sleeping = false
+			     // 唤醒定时器futex睡眠
+			     notewakeup(&tb.waitnote)
 		    }
 		    if tb.rescheduling {
-			    tb.rescheduling = false
-			    goready(tb.gp, 0)
+			     tb.rescheduling = false
+			     goready(tb.gp, 0)
 		    }
 	    }
 	    // 启动定时器loop线程
 	    if !tb.created {
-		    tb.created = true
-		    go timerproc(tb)
+		     tb.created = true
+		     go timerproc(tb)
 	    }
   }
+     ```
+
+    ```go
+    // timer gorutine 周期性的管理二叉堆
+    func timerproc() {
+    	timers.gp = getg()
+    	for {
+    		lock(&timers.lock)
+    		timers.sleeping = false
+    		now := nanotime()
+    		delta := int64(-1)
+    		for {
+    			if len(timers.t) == 0 {
+    				delta = -1
+    				break
+    			}
+    			t := timers.t[0]
+    			delta = t.when - now
+              // 需要休眠等待到expire时间点
+    			if delta > 0 {
+    				break
+    			}
+    			if t.period > 0 {
+    				// leave in heap but adjust next time to fire
+    				t.when += t.period * (1 + -delta/t.period)
+    				siftdownTimer(0)
+    			} else {
+    				// remove from heap
+    				last := len(timers.t) - 1
+    				if last > 0 {
+    					timers.t[0] = timers.t[last]
+    					timers.t[0].i = 0
+    				}
+    				timers.t[last] = nil
+    				timers.t = timers.t[:last]
+    				if last > 0 {
+    					siftdownTimer(0)
+    				}
+    				t.i = -1 // mark as removed
+    			}
+    			f := t.f
+    			arg := t.arg
+    			seq := t.seq
+    			unlock(&timers.lock)
+    			if raceenabled {
+    				raceacquire(unsafe.Pointer(t))
+    			}
+    			f(arg, seq)
+    			lock(&timers.lock)
+    		}
+    		if delta < 0 || faketime > 0 {
+    			// No timers left - put goroutine to sleep.
+    			timers.rescheduling = true
+    			goparkunlock(&timers.lock, "timer goroutine (idle)", traceEvGoBlock, 1)
+    			continue
+    		}
+    		// At least one timer pending. Sleep until then.
+    		timers.sleeping = true
+    		noteclear(&timers.waitnote)
+    		unlock(&timers.lock)
+          // 调用futex休眠等待到delta超时时间
+    		notetsleepg(&timers.waitnote, delta)
+    	}
+	}
 	```
 
     notetsleep最终会调用os_linux.go中的futexsleep
@@ -165,7 +200,7 @@ author: lambdae
     
     
 
-* **Golang定时器主循环伪码流程**
+* **Golang定时器伪码流程**
 
 
      ```go
