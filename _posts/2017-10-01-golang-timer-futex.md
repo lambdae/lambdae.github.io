@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 浅析Go语言和beanstalk的timer的设计
+title: 浅析Go语言和beanstalk的timer设计
 description: 简要分析timer的实现方式
 categories: os tech
 author: lambdae
