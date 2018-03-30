@@ -12,7 +12,7 @@ author: lambdae
     
     **beanstalk**定时器是基于**MinHeap + Epoll**实现的，超时机制是建立在内核的**epoll_wait()**系统调用上，优点在于实现简单，包装下epoll接口就可以实现。缺点在于添加、删除定时事件都需要系统调用，当然这也不算什么缺点。只是对比golang的实现就有些逊色。
     
-    **golang**定时器是基于**MinHeap + Futex**实现的，Go使用一个线程周期性的去获取最小堆里最近的deadline事件，利用futex做**1微秒**时间片的周期睡眠。当有更近的deadline事件添加时就唤醒线程去获取最新的delta时间去睡眠。对比beanstalk的实现，Golang需要多启动一个定时器线程去做周期性的睡眠。但Golang的定时器添加与删除都是在用户态完成的。
+    **golang**定时器是基于**MinHeap + Futex**实现的，Go使用一个协程周期性的去获取最小堆里最近的deadline事件，利用futex做**1微秒**时间片的周期睡眠。当有更近的deadline事件添加时就唤醒协程去获取最新的delta时间去睡眠。对比beanstalk的实现，Golang需要多启动一个定时器协程去做周期性的睡眠。但Golang的定时器添加与删除都是在用户态完成的。
     
 
 * **beanstalk的timer**
@@ -57,7 +57,7 @@ author: lambdae
 			     goready(tb.gp, 0)
 		    }
 	    }
-	    // 启动定时器loop线程
+	    // 启动定时器loop协程
 	    if !tb.created {
 		     tb.created = true
 		     go timerproc(tb)
@@ -212,7 +212,7 @@ author: lambdae
 
 
      ```go
-    // 定时器loop线程
+    // 定时器loop协程
     func  timerproc() {
         loop {
             delta = getMinTimerHeapDelta()
