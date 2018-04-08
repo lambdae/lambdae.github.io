@@ -57,7 +57,28 @@ layout: compress
     bottom: -50px;
   }
 </style>
-<script>loadlive2d("live2dcanvas" ,"/live2d/models/tororo.model.json",0.5)</script>
+<script>
+function isMobile() { 
+ if( navigator.userAgent.match(/Android/i)
+ || navigator.userAgent.match(/webOS/i)
+ || navigator.userAgent.match(/iPhone/i)
+ || navigator.userAgent.match(/iPad/i)
+ || navigator.userAgent.match(/iPod/i)
+ || navigator.userAgent.match(/BlackBerry/i)
+ || navigator.userAgent.match(/Windows Phone/i)
+ ){
+    return true;
+  }
+ else {
+    return false;
+  }
+}
+
+if (isMobile() == false) {
+    loadlive2d("live2dcanvas" ,"/live2d/models/tororo.model.json",0.5);
+}
+
+</script>
 
 </body>
 </html>
