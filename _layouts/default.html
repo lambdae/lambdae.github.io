@@ -44,6 +44,20 @@ layout: compress
         
         
 </div>            
-        
+
+
+<script type="text/javascript" src="/live2d/script.js"></script>
+<canvas id="live2dcanvas" width="300" height="400" class="live2d"></canvas>
+<style>
+  #live2dcanvas {
+    position: fixed;
+    left: 0px;
+    z-index: 999;
+    pointer-events: none;
+    bottom: -50px;
+  }
+</style>
+<script>loadlive2d("live2dcanvas" ,"/live2d/models/tororo.model.json",0.5)</script>
+
 </body>
 </html>
