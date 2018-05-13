@@ -1,14 +1,45 @@
-            <div id="mySidenav" class="sidenav">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
-                <svg id="i-close" viewBox="0 0 32 32" width="24" height="24" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M2 30 L30 2 M30 30 L2 2" /></svg>
-            </a>
-         
-             <a href="{{site.baseurl}}/">
-                <h2>{{site.title}}</h2>
-             </a>
-            {% for my_page in site.pages %}
-                {% if my_page.show-in-menu %}
-                    <a class="page-link" href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a>
-                {% endif %}
-            {% endfor %}      
-            </div>
+<div class="col-sm-2">
+
+{% include Recent_Posts.html %}
+{% include Categories.html %}
+{% include Tags.html %}
+{% include Blogroll.html %}
+{% include Archives.html %}
+
+
+<script type="text/javascript" src="/live2d/script.js"></script>
+<canvas id="live2dcanvas" width="300" height="400" class="live2d"></canvas>
+<style>
+  #live2dcanvas {
+    position: fixed;
+    right: 0px;
+    z-index: 999;
+    pointer-events: none;
+    bottom: -50px;
+  }
+</style>
+<script>
+function isMobile() { 
+ if( navigator.userAgent.match(/Android/i)
+ || navigator.userAgent.match(/webOS/i)
+ || navigator.userAgent.match(/iPhone/i)
+ || navigator.userAgent.match(/iPad/i)
+ || navigator.userAgent.match(/iPod/i)
+ || navigator.userAgent.match(/BlackBerry/i)
+ || navigator.userAgent.match(/Windows Phone/i)
+ ){
+    return true;
+  }
+ else {
+    return false;
+  }
+}
+
+if (isMobile() == false) {
+    loadlive2d("live2dcanvas" ,"/live2d/models/tororo.model.json",0.5);
+}
+
+</script>
+
+</div>
+

@@ -1,56 +1,191 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely need to edit after that.
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'jekyll serve'. If you change this file, please restart the server process.
-
-# Site settings
+### Site info:
 title: Lambdae
-description: Lambde is awesome
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://lambdae.github.io/"
-permalink: :title/
+tagline: 
+author: lambdae
+email: scott.yang@hotmail.com
+description: "" # You can edit this line in _config.yml. It will appear in your document head meta and in your feed.xml site description
+keywords: "Jekyll, distributed system, kernel"
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "https://lambdae.github.io" # the base hostname & protocol for your site
+locale: en_US
+
+### Personal info and site tools info:
+github_username:  lambdae
+disqus_shortname: lambdae
+favicon:     "/images/favicon.ico"
+aboutme: Hi, this is Lijia Yu. I made the Freshman21 theme. Please enjoy it. # these are shown on aboutme-sidebar.
+aboutme_photo: https://i.imgur.com/Mdc4szJl.jpg# your photo.
+google_analytics_key: UA-57979084-1 # put YOUR key here to enable tracking! (blank to disable)
 
 
-# CSS
-sass:
-  style: compressed
+### Site setting:
+ShowContactInfo: "True" # Personal Info (twitter,github,email) can be seen on aboutme-sidebar, those info only shown where ShowContactInfo == True
+default_column: "two" # blog style: two columns, if default_column != "two", you will see a one column blog.
+default_locale: "en" # blog sidebar language set, only include: English (en), Chinese (cn), Japanese (jp), Polish (pl), Korean (kr),  Russian (ru), Turkish (tr), and Indonesian (id).
 
-# Comments - Go to Disqus.com > sign up > get the short-name > insert it here
-disqus-shortname: 
+locales:
+    en:
+      Aboutme: "About Me"
+      Archives: "Archives"
+      Blogroll: "Blogroll"
+      Categories: "Categories"
+      Copyright_Notice: "Copyright Notice"
+      Recent_Posts: "Recent Posts"
+      Tags: "Tags"
+      Previous: "Older"
+      Next: "Newer"
+      PostedInCategories: "Posted in"
+      Taggedwith: "and tagged"
+      PostDate: "on "
+      Google_search: "Site Search"
+      Home: "Home"
+      About: "About"
+      Guestbook: "Guestbook"
+      Subscribe: "Subscribe"
+    cn:
+      Aboutme: "关于我"
+      Archives: "存档"
+      Blogroll: "良师益友"        
+      Categories: "分类目录"    
+      Copyright_Notice: "版权声明"
+      Recent_Posts: "近期文章"
+      Tags: "标签" 
+      Previous: "前一页"
+      Next: "后一页"
+      PostedInCategories: "目录:"   
+      Taggedwith: "| 标签:"
+      PostDate: "| 发表时间: "
+      Google_search: "站内搜索"
+      Home: "首页"
+      About: "关于"
+      Guestbook: "留言"
+      Subscribe: "订阅"
+    jp:
+      Aboutme: "著者"
+      Archives: "アーカイブ"
+      Blogroll: "ブログロール"
+      Categories: "カテゴリー"
+      Copyright_Notice: "著作権表示"
+      Recent_Posts: "最近の投稿"
+      Tags: "タグ"
+      Previous: "前の記事"
+      Next: "次の記事"
+      PostedInCategories: "カテゴリー："
+      Taggedwith: "| タグ："
+      PostDate: "| 投稿日時: "
+      Google_search: "サイト内検索"
+      Home: "ホーム"
+      About: "このブログについて"
+      Guestbook: "メッセージ"
+      Subscribe: "購読"
+    pl:
+      Aboutme: "O mnie"
+      Archives: "Archiwum"
+      Blogroll: "Odnośniki"
+      Categories: "Kategorie"
+      Copyright_Notice: "Prawa autorskie"
+      Recent_Posts: "Najnowsze wpisy"
+      Tags: "Tagi"
+      Previous: "Starsze"
+      Next: "Nowsze"
+      PostedInCategories: "Kategoria"
+      Taggedwith: "tagi"
+      PostDate: "on "
+      Google_search: "Wyszukiwarka"
+      Home: "Strona główna"
+      About: "O mnie"
+      Guestbook: "Księga gości"
+      Subscribe: "Subskrypcja"
+    kr:
+      Aboutme: "저자 소개"
+      Archives: "모든 게시물"
+      Blogroll: "참조 링크"
+      Categories: "카테고리"
+      Copyright_Notice: "저작권"
+      Recent_Posts: "최근 게시물"
+      Tags: "태그"
+      Previous: "이전 게시물"
+      Next: "다음 게시물"
+      PostedInCategories: "카테고리: "
+      Taggedwith: "태그: "
+      PostDate: "작성일: "
+      Google_search: "게시물 검색"
+      Home: "홈"
+      About: "소개"
+      Guestbook: "방명록"
+      Subscribe: "구독하기"
+    ru:
+      Aboutme: "Обо мне" # = 'About me'
+      Archives: "Архив"
+      Blogroll: "Ссылки" # = 'Links'
+      Categories: "Разделы"
+      Copyright_Notice: "Авторские права"
+      Recent_Posts: "Свежие посты"
+      Tags: "Теги"
+      Previous: "Предыдущий пост"          # = 'Previous post'
+      Next: "Следующий пост"               # = 'Next post'
+      PostedInCategories: "Опубликовано в" # = 'Posted in'
+      Taggedwith: "с тегами"
+      PostDate: ""
+      Google_search: "Поиск на Google"
+      Home: "Домой"
+      About: "О блоге"            # = 'About blog'
+      Guestbook: "Гостевая книга"
+      Subscribe: "Подписаться"
+    tr:
+      Aboutme: "Hakkımda"
+      Archives: "Arşivler"
+      Blogroll: "Bağlantılar"
+      Categories: "Kategoriler"
+      Copyright_Notice: "Telif Hakkı Bildirimi"
+      Recent_Posts: "Son Yazılar"
+      Tags: "Etiketler"
+      Previous: "Daha Eski"
+      Next: "Daha Yeni"
+      PostedInCategories: "Şuraya gönderildi:"
+      Taggedwith: "ve şöyle etiketlendi:"
+      PostDate: "şu tarihte:"
+      Google_search: "Sitede Ara"
+      Home: "Anasayfa"
+      About: "Hakkında"
+      Guestbook: "Konuk Defteri"
+      Subscribe: "Abone Ol"
+    id:
+      Aboutme: "Tentang Saya"
+      Archives: "Arsip"
+      Blogroll: "Blog teman"
+      Categories: "Kategori"
+      Copyright_Notice: "Legal Formal"
+      Recent_Posts: "Post Terkini"
+      Tags: "Tag"
+      Previous: "Lebih lama"
+      Next: "Lebih baru"
+      PostedInCategories: "Diposting di"
+      Taggedwith: "dan ditag"
+      PostDate: "pada "
+      Google_search: "Pencarian Situs"
+      Home: "Beranda"
+      About: "Tentang"
+      Guestbook: "Buku tamu"
+      Subscribe: "Langganan"
 
-# Tracker
-analytics: UA-83979019-1
+### your Blogroll info, only name can shown on the page.
 
-# Form Settings
-#
-# Contact form can be enabled by getting an API key from https://getsimpleform.com/
-simpleform-token: b6d4be9b039b666b3311e1ddcbfb577c
-
-# Redirect users after submitting the form
-redirect-to: http://blog.webjeda.com/thank-you/
-
-# Site version
-version: 0.9
+Blogroll:
+      - name: Freshman
+        href: http://yulijia.net/freshman
+        title: Another Jekyll blog theme
+      - name: author's website
+        href: http://yulijia.net/
+        title: Lijia Yu's website
 
 
-# Post date background - This will change the background of the post date and tag ribbon according to the theme. If set to no default green background will be used. If yes then the theme color scheme is used.
-
-change-date-bg: no
-
-# Build settings
-
+### Build settings
 markdown: kramdown
-
-include: [_pages] # Includes files inside _pages directory [Do not remove this]
-
-author:
-  name: Lambdae
-  image: lambdae.png # The author image will be shown on the header. Place this image in /images/ folder.
-  about: lambda is awsome
-  email: cn_justin@163.com
-  
-plugins: 
-  - jekyll-seo-tag
-  - jekyll-paginate
+#highlighter: pygments
+kramdown:
+        input: GFM
+        syntax_highlighter: rouge
+plugins: [jekyll-paginate]
+paginate: 5
+excerpt_separator: <!-- more -->

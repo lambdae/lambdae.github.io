@@ -4,6 +4,8 @@ title: Nginx如何通过CAS操作解决惊群效应
 description:  简述nginx如何通过CAS实现用户态的try_lock操作解决潜在的惊群效应
 categories: tech os
 author: lambdae
+tags: [spinlock]
+comments: true
 ---
 
 - **引言**
