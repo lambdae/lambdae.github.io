@@ -2,8 +2,10 @@
 layout: post
 title: 使用pprof分析变量逃逸过程
 description:  Golang 变量逃逸
-categories: golang pprof tech
+categories: golang tech
 author: lambdae
+tags: [pprof]
+comments: true
 ---
 
 
@@ -53,7 +55,72 @@ author: lambdae
     ```
     ​
 
-    ​
+    **问题修复**
 
+    使用interface{}实现的泛型fixedbuf存在变量逃逸情况，直接使用slice做固定的buf.
+    ```go
+    // FixedBuffer fixed reuse buffer for zero alloc
+    type FixedBuffer struct {
+    	b   interface{}
+    	idx int
+    	cap int
+    	op  iBufferOP
+    }
 
+    type iBufferOP interface {
+    	assign(fb *FixedBuffer, val interface{})
+    	init(fb *FixedBuffer, n int)
+    }
 
+    func (fb *FixedBuffer) push(t interface{}) {
+    	if fb.idx >= fb.cap {
+    		panic("ERROR buffer overflow")
+    	}
+    	fb.op.assign(fb, t)
+    	fb.idx++
+    }
+
+    func (fb *FixedBuffer) reset() {
+    	fb.idx = 0
+    }
+
+    func NewFixedBuffer(n int, op iBufferOP) *FixedBuffer {
+    	fb := &FixedBuffer{
+    		// b:   make([]interface{}, n),
+    		idx: 0,
+    		cap: n,
+    		op:  op,
+    	}
+    	fb.op.init(fb, n)
+    	return fb
+    }
+    ```
+    优化后，函数调用完全ZeroAlloc，达到了使用fixedbuffer的预期.
+
+    ```go
+    type mbuf struct {
+    	token  []MatchToken
+    	at     []matchAt
+    	ti, ai int
+    }
+
+    func (mb *mbuf) reset() {
+    	mb.ai, mb.ti = 0, 0
+    }
+
+    func (mb *mbuf) addToken(mt MatchToken) {
+    	if mb.ti >= TokenBufferSize {
+    		panic("ERROR buffer overflow")
+    	}
+    	mb.token[mb.ti] = mt
+    	mb.ti++
+    }
+
+    func (mb *mbuf) addAt(mt matchAt) {
+    	if mb.ai >= MatchBufferSize {
+    		panic("ERROR buffer overflow")
+    	}
+    	mb.at[mb.ai] = mt
+    	mb.ai++
+    }
+    ```
