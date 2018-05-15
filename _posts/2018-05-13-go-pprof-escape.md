@@ -124,3 +124,48 @@ comments: true
     	mb.ai++
     }
     ```
+
+- **问题原因**
+
+  首先我们来看下面这个变量逃逸示例
+
+  ```go
+  func main() {
+  	lc := 1
+  	s := make([]interface{}, lc)
+  	s[0] = lc
+  }
+
+  func main2() {
+  	lc := 1
+  	s := make([]*int, lc)
+  	s[0] = &lc
+  }
+
+  go run -gcflags='-m -m' sample2.go
+  ./sample2.go:5: make([]interface {}, lc) escapes to heap
+  ./sample2.go:6: lc escapes to heap
+  ```
+
+  make从堆申请，这点无可厚非，我们把interface{}改为int类型后
+
+  ```go
+  func main() {
+  	lc := 1
+  	s := make([]int, lc)
+  	s[0] = lc
+  }
+
+  go run -gcflags='-m -m' sample2.go
+  ./sample2.go:5: make([]interface {}, lc) escapes to heap
+  ```
+
+  make得到的slice是在堆申请的，生命周期比函数更长，当slice里为引用时变量会转移到堆，而interface{}能接收任意类型，在做逃逸分析时，保守的认为输入的值可能是引用，所以把变量移到堆里去了。[stackoverflow](https://stackoverflow.com/questions/49125779/why-does-a-pointer-to-a-local-variable-escape-to-the-heap/49127518#49127518)相关资料：
+
+  `make` for a slice returns a slice descriptor `struct` (pointer to underlying array, length, and capacity) and allocates an underlying slice element array. The underlying array is generally allocated on the heap: `make([]*int, lc) escapes to heap from make([]*int, lc)`.
+
+  `s[0] = &v` stores a reference to the variable `v` (`&v`) in the underlying array on the heap: `&v escapes to heap from s[0] (slice-element-equals)`, `moved to heap: v`. The reference remains on the heap, after the function ends and its stack is reclaimed, until the underlying array is garbage collected.
+
+  If the `make` slice capacity is a small (compile time) constant, `make([]*int, 1)` in your example, the underlying array may be allocated on the stack. However, escape analysis does not take this into account.
+
+  ​
