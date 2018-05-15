@@ -41,7 +41,7 @@ author: lambdae
     ```go
     go tool pprof -alloc_space -svg http://localhost:8787/debug/pprof/heap > ~/Desktop/go_heap.svg
     ```
-    ![image](https://raw.githubusercontent.com/lambdae/lambdae.github.io/master/images/go_heap.svg)
+    ![image](https://raw.githubusercontent.com/lambdae/lambdae.github.io/master/images/go_heap.png)
 
     我们发现matchOf申请了大量的内存，于是怀疑matchOf可能存在变量逃逸，使用-gcflags -m重新生成测试程序发现确实存在MatchToken临时变量逃逸到heap。
 
