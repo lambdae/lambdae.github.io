@@ -1,10 +1,28 @@
 ---
 layout: page
-title: 
+title: Guestbook
 comments: yes
 permalink: /guestbook/
 ---
 ## Hi, welcome to leave a message here.:)
 
-> To follow the path, look to the master, follow the master, walk with the master, see through the master, become the master.
+
+<div id="container"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+ 
+ <script>
+    var clientId = '3e9292b4ac8600a2458a'
+    var clientSecret = 'bcaa6da30add2ad8c8f686c6c3896f0c0492d576'
+    var gitment = new Gitment({
+      id: 'issue',
+      owner: 'lambdae',
+      repo: 'lambdae.github.io',
+      oauth: {
+        client_id: clientId,
+        client_secret: clientSecret,
+      },
+    })
+    gitment.render('container')
+</script>
 
