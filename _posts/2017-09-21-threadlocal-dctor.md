@@ -4,6 +4,7 @@ title: 怎样实现一个多线程无锁的单例模式
 description: 实现一个基本threadlocal的单例模式 
 categories: multithread tech 
 author: lambdae
+comments: true
 ---
 
 * **概述**

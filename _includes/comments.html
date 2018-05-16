@@ -1,16 +1,14 @@
-<div id="disqus_thread"></div>
-
-<script type="text/javascript">
-{% if site.safe == false %}
-  var disqus_developer = 1;
-{% endif %}
-var disqus_shortname ='{{ site.disqus_shortname }}';
-/* * * DON'T EDIT BELOW THIS LINE * * */
-(function() {
-  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-  dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-})();
+<div id="gitmentContainer"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+    owner: 'lambdae',
+    repo: 'lambdae.github.io',
+    oauth: {
+        client_id: '451ff05033630d5dad53',
+        client_secret: '818f5373d5d4616c7ae78dd9211ca5bb86beada4',
+    },
+});
+gitment.render('gitmentContainer');
 </script>
-
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>

@@ -4,6 +4,7 @@ title: 完美哈希在Jemalloc的应用
 description:  简述malloc(size_t size)过程中，通过静态的完美哈希解决size到slab槽位的映射.
 categories: tech os
 author: lambdae
+comments: true
 ---
 
 

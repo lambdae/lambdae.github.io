@@ -4,6 +4,7 @@ title: 浅析Go语言和beanstalk的timer设计
 description: 简要分析timer的实现方式
 categories: os tech
 author: lambdae
+comments: true
 ---
 
 * **结论**

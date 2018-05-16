@@ -4,6 +4,7 @@ title: 简要分析Jemalloc与常见内存分配器
 description:  横向对比各自类slab内存分配器，以及对内存管理的个人总结
 categories: os slab tech
 author: lambdae
+comments: true
 ---
 
 *  **引言**

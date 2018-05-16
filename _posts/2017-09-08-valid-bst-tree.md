@@ -4,6 +4,8 @@ title: O(1)空间复杂度校验有序二叉树
 description:  leetcode二叉树题解
 categories: leetcode tech
 author: lambdae
+tags: [binarytree]
+comments: true
 ---
 
 

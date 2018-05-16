@@ -4,6 +4,8 @@ title: 开发环境配置
 description:  vim ycmd pyenv配置
 categories: tech
 author: lambdae
+tags: [配置]
+comments: true
 ---
 
 
